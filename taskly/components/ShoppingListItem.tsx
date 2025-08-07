@@ -2,48 +2,43 @@ import { Alert, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import { theme } from "../theme";
 
 type Props = {
-    name?: String;
+  name?: string;
 };
 
-export function ShoppingListItem ({name }: Props) {
-      const handleDelete = () => {
-        Alert.alert(
-          `Are you sure you want to delete ${name}`,
-          "It will be gone for good",
-          [
-            {
-              text: "Yes",
-              onPress: () => console.log("Ok, deleting"),
-              style: "destructive",
-            },
-            {
-              text: "Cancel",
-              style: "cancel"
-            }
-          ],
-        );
-      };
-
-    return (
-        <View style={styles.itemContainer}>
-            <Text style={styles.itemText}>{name}</Text>
-            <TouchableOpacity 
-                onPress={handleDelete}
-                style={styles.button}
-                activeOpacity={0.8}
-                >
-                <Text style={styles.buttonText}>Delete</Text>
-            </TouchableOpacity>
-        </View>
+export function ShoppingListItem({ name }: Props) {
+  const handleDelete = () => {
+    Alert.alert(
+      `Are you sure you want to delete ${name}`,
+      "It will be gone for good",
+      [
+        {
+          text: "Yes",
+          onPress: () => console.log("Ok, deleting"),
+          style: "destructive",
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ],
     );
-};
+  };
+
+  return (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemText}>{name}</Text>
+      <TouchableOpacity
+        onPress={handleDelete}
+        style={styles.button}
+        activeOpacity={0.8}
+      >
+        <Text style={styles.buttonText}>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colorWhite,
-    justifyContent: 'center',
-  },
   itemContainer: {
     borderBottomWidth: 1,
     borderBottomColor: theme.colorCerulean,
@@ -67,5 +62,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 1,
-  }
+  },
 });
