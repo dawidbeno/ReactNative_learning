@@ -1,36 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { theme } from "./theme";
+import { ShoppingListItem } from './components/ShoppingListItem';
 
 export default function App() {
-  const handleDelete = () => {
-    Alert.alert("Are you sure you want to delete this?",
-      "It will be gone for good",
-      [
-        {
-          text: "Yes",
-          onPress: () => console.log("Ok, deleting"),
-          style: "destructive",
-        },
-        {
-          text: "Cancel",
-          style: "cancel"
-        }
-      ],
-    );
-  };
+
 
   return (
     <View style={styles.container}>
-      <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>Coffee</Text>
-        <TouchableOpacity 
-          onPress={handleDelete}
-          style={styles.button}
-          activeOpacity={0.8}
-          >
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
+      <ShoppingListItem name="Coffee" />
+      <ShoppingListItem name="Tea"/>
+      <ShoppingListItem name="Milk"/>
     </View>
   );
 }
