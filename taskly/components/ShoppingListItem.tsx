@@ -1,13 +1,14 @@
 import {
-  Alert,
-  Text,
   TouchableOpacity,
   View,
+  Alert,
   StyleSheet,
+  Text,
   Pressable,
 } from "react-native";
-import { theme } from "../theme";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import { theme } from "../theme";
 
 type Props = {
   name: string;
@@ -24,7 +25,7 @@ export function ShoppingListItem({
 }: Props) {
   const handleDelete = () => {
     Alert.alert(
-      `Are you sure you want to delete ${name}`,
+      `Are you sure you want to delete ${name}?`,
       "It will be gone for good",
       [
         {
@@ -32,10 +33,7 @@ export function ShoppingListItem({
           onPress: () => onDelete(),
           style: "destructive",
         },
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
+        { text: "Cancel", style: "cancel" },
       ],
     );
   };
@@ -48,15 +46,22 @@ export function ShoppingListItem({
       ]}
       onPress={onToggleComplete}
     >
-      <Text
-        style={[
-          styles.itemText,
-          isCompleted ? styles.completedText : undefined,
-        ]}
-      >
-        {name}
-      </Text>
-      <TouchableOpacity onPress={handleDelete} activeOpacity={0.8}>
+      <View style={styles.row}>
+        <Entypo
+          name={isCompleted ? "check" : "circle"}
+          size={24}
+          color={isCompleted ? theme.colorGrey : theme.colorCerulean}
+        />
+        <Text
+          style={[
+            styles.itemText,
+            isCompleted ? styles.completedText : undefined,
+          ]}
+        >
+          {name}
+        </Text>
+      </View>
+      <TouchableOpacity hitSlop={20} onPress={handleDelete}>
         <AntDesign
           name="closecircle"
           size={24}
@@ -69,10 +74,10 @@ export function ShoppingListItem({
 
 const styles = StyleSheet.create({
   itemContainer: {
-    borderBottomWidth: 1,
-    borderBottomColor: theme.colorCerulean,
-    paddingHorizontal: 18,
     paddingVertical: 16,
+    paddingHorizontal: 18,
+    borderBottomColor: theme.colorCerulean,
+    borderBottomWidth: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -80,6 +85,8 @@ const styles = StyleSheet.create({
   itemText: {
     fontSize: 18,
     fontWeight: "200",
+    marginLeft: 8,
+    flex: 1,
   },
   completedContainer: {
     backgroundColor: theme.colorLightGrey,
@@ -89,5 +96,10 @@ const styles = StyleSheet.create({
     color: theme.colorGrey,
     textDecorationLine: "line-through",
     textDecorationColor: theme.colorGrey,
+  },
+  row: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
   },
 });
