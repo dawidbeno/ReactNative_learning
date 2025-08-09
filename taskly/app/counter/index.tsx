@@ -17,7 +17,7 @@ import { getFromStorage, saveToStorage } from "../../utils/storage";
 import * as Haptics from "expo-haptics";
 import ConfettiCannon from "react-native-confetti-cannon";
 
-// 10 seconds from now
+// two weeks
 const frequency = 14 * 24 * 60 * 60 * 1000;
 
 export const countdownStorageKey = "taskly-countdown";
