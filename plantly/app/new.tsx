@@ -10,8 +10,12 @@ import { PlantlyButton } from "@/components/PlantlyButton";
 import { useState } from "react";
 import { PlantlyImage } from "@/components/PlantlyImage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { usePlantStore } from "@/store/plantsStore";
+import { useRouter } from "expo-router";
 
 export default function NewScreen() {
+  const router = useRouter();
+  const addPlant = usePlantStore((state) => state.addPlant);
   const [name, setName] = useState<string>();
   const [days, setDays] = useState<string>();
 
@@ -34,7 +38,9 @@ export default function NewScreen() {
       );
     }
 
-    console.log("Adding plant", name, days);
+    addPlant(name, Number(days));
+    // The default behaviour of the underlying library has changed. If you are using Expo Router 4+ (which depends on React Navigation 7+), use router.back() here instead. More info: https://reactnavigation.org/docs/upgrading-from-6.x/#the-navigate-method-no-longer-goes-back-use-popto-instead
+    router.navigate("/");
   };
 
   return (
