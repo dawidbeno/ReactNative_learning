@@ -18,23 +18,12 @@ export default function Layout() {
   return (
     <Tabs screenOptions={{ tabBarActiveTintColor: theme.colorGreen }}>
         <Tabs.Screen
-            name="index"
+            name="(home)"
             options={{
-                title: "Home",
                 tabBarShowLabel: false,
+                headerShown: false,
                 tabBarIcon: ({ color, size }) => (
                     <Entypo name="home" color={color} size={size} />
-                ),
-                headerRight: () => (
-                    <Link href="/new" asChild>
-                        <Pressable hitSlop={20} style={{ marginRight: 18 }}>
-                            <AntDesign 
-                                name="plus-circle"
-                                size={24}
-                                color={theme.colorGreen}
-                            />
-                        </Pressable>
-                    </Link>
                 ),
             }}
         />
