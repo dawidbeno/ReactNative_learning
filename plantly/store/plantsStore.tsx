@@ -1,18 +1,20 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { File, Paths } from "expo-file-system";
 
 export type PlantType = {
   id: string;
   name: string;
   wateringFrequencyDays: number;
   lastWateredAtTimestamp?: number;
+  imageUri?: string;
 };
 
 type PlantsState = {
   nextId: number;
   plants: PlantType[];
-  addPlant: (name: string, wateringFrequencyDays: number) => void;
+  addPlant: (name: string, wateringFrequencyDays: number, imageUri?: string) => Promise<void>;
   removePlant: (plantId: string) => void;
   waterPlant: (plantId: string) => void;
 };
@@ -22,8 +24,21 @@ export const usePlantStore = create(
     (set) => ({
       plants: [],
       nextId: 1,
-      addPlant: (name: string, wateringFrequencyDays: number) => {
-        return set((state) => {
+      addPlant: async (
+        name: string,
+        wateringFrequencyDays: number,
+        imageUri?: string,
+      ): Promise<void> => {
+        const fileName = `${new Date().getTime()}-${imageUri?.split("/").slice(-1)[0]}`;
+        const destinationFile = new File(Paths.document, fileName);
+        const savedImageUri = destinationFile.uri;
+
+        if (imageUri) {
+          const sourceFile = new File(imageUri);
+          await sourceFile.copy(destinationFile);
+        }
+
+        set((state) => {
           return {
             ...state,
             nextId: state.nextId + 1,
@@ -32,6 +47,7 @@ export const usePlantStore = create(
                 id: String(state.nextId),
                 name,
                 wateringFrequencyDays,
+                imageUri: imageUri ? savedImageUri : undefined,
               },
               ...state.plants,
             ],
