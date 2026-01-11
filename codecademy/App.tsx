@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from "react-native";
+import { View, Text, TextInput, Button } from "react-native";
 import { TestDataButton } from './components/TestDataButton';
 
 interface Todo {
@@ -36,6 +36,15 @@ export default function App() {
   return (
     <View>
       <Text>My To-do List</Text>
+      <TextInput
+      value={todoText}
+      onChangeText={setTodoText}
+      placeholder="Enter a new to-do"
+      />
+      <Button
+      title="Add To-do"
+      onPress={addTodo}
+      />
     </View>
   );
 }
