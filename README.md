@@ -7,6 +7,11 @@ This repository is for learning React Native development.
 ## About Expo
 Expo is a framework and platform for universal React applications, making it easy to build and test React Native apps.
 
+## Start new project
+```sh
+npx create-expo-app my-app --template
+```
+
 ## About Yarn
 Yarn is a fast, reliable package manager used to manage project dependencies.
 
@@ -18,3 +23,11 @@ To install Yarn, run:
 ```sh
 npm install --global yarn
 ```
+
+# React Native Core Components
+1. Text
+2. Image
+3. ScrollView
+4. TextInput
+5. Button
+6. 
