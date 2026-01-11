@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, ScrollView } from "react-native";
-//import { TestDataButton } from './components/TestDataButton';
+import { TestDataButton } from './components/TestDataButton';
 
 interface Todo {
   id: number;
@@ -34,7 +34,7 @@ export default function App() {
   };
 
   return (
-    <View>
+    <View style={{ marginTop: 104 }}>
       <Text>My To-do List</Text>
       <TextInput
       value={todoText}
@@ -45,6 +45,7 @@ export default function App() {
       title="Add To-do"
       onPress={addTodo}
       />
+      <TestDataButton onAddTestData={setTodos} />
       <Text>Tasks:</Text>
       <ScrollView style={{ maxHeight: 400 }}>
         {todos.length === 0 ? (
@@ -59,6 +60,10 @@ export default function App() {
           ))
         )}
       </ScrollView>
+      <View>
+        <Text>Total: {todos.length}</Text>
+        <Text>Completed: {todos.filter(todo => todo.completed).length}</Text>
+      </View>
     </View>
   );
 }
