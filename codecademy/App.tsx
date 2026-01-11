@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from "react-native";
-import { TestDataButton } from './components/TestDataButton';
+import { View, Text, TextInput, Button, ScrollView } from "react-native";
+//import { TestDataButton } from './components/TestDataButton';
 
 interface Todo {
   id: number;
@@ -45,6 +45,20 @@ export default function App() {
       title="Add To-do"
       onPress={addTodo}
       />
+      <Text>Tasks:</Text>
+      <ScrollView style={{ maxHeight: 400 }}>
+        {todos.length === 0 ? (
+          <Text>No to-dos yet. Add one above!</Text>
+        ) : (
+          todos.map(todo => (
+            <View key={todo.id}>
+              <Text onPress={() => toggleTodo(todo.id)}>
+                {todo.completed ? 'x' : 'o'} {todo.text}
+              </Text>
+            </View>
+          ))
+        )}
+      </ScrollView>
     </View>
   );
 }
