@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { View, Text } from "react-native";
 import { TestDataButton } from './components/TestDataButton';
 
 interface Todo {
@@ -34,6 +34,8 @@ export default function App() {
   };
 
   return (
-    <></>
+    <View>
+      <Text>My To-do List</Text>
+    </View>
   );
 }
