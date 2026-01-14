@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
   layout: {
     flex: 1,
     backgroundColor: '#e5e5e5',
+    alignItems: 'center',
   },
   box: {
     backgroundColor: 'black',
