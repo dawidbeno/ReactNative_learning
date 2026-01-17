@@ -1,20 +1,29 @@
 import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, StyleSheet } from "react-native";
 
 import Card from "./components/Card";
 import Post from "./components/Post";
 import data from "./data/data";
 import type { User, Post as PostType, Featured } from "./data/data";
 
+
+const styles = StyleSheet.create({
+  heading: {
+    fontSize: 18,
+    margin: 8,
+    fontWeight: 'bold',
+  }
+});
+
 const HomeScreen = () => (
   <ScrollView>
-    <Text style={{ fontSize: 18, margin: 8, fontWeight: 'bold' }}>Stories</Text>
+    <Text style={styles.heading}>Stories</Text>
     <ScrollView horizontal>
       {(data.users as User[]).map((user) => (
         <Card key={user.id} avatar={user.avatar} name={user.name} />
       ))}
     </ScrollView>
-    <Text>Featured</Text>
+    <Text style={[styles.heading, {color: 'blue'}]}>Featured</Text>
     {(data.featured as Featured[]).map((post) => (
       <Post
         key={post.id}
@@ -25,7 +34,7 @@ const HomeScreen = () => (
       />
     ))}
 
-    <Text>My Feed</Text>
+    <Text style={styles.heading}>My Feed</Text>
     {(data.posts as PostType[]).map((post) => (
       <Post
         key={post.id}
@@ -43,5 +52,6 @@ const App = () => (
     <HomeScreen />
   </View>
 );
+
 
 export default App;
