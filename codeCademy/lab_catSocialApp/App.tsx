@@ -8,7 +8,7 @@ import type { User, Post as PostType, Featured } from "./data/data";
 
 const HomeScreen = () => (
   <ScrollView>
-    <Text>Stories</Text>
+    <Text style={{ fontSize: 18, margin: 8, fontWeight: 'bold' }}>Stories</Text>
     <ScrollView horizontal>
       {(data.users as User[]).map((user) => (
         <Card key={user.id} avatar={user.avatar} name={user.name} />
@@ -39,7 +39,7 @@ const HomeScreen = () => (
 );
 
 const App = () => (
-  <View style={{ flex: 1 }}>
+  <View style={{ flex: 1, paddingTop: 50, backgroundColor: '#FAFAFA' }}>
     <HomeScreen />
   </View>
 );
