@@ -33,8 +33,22 @@ export function SetupPrompts({ prompts, onAddPrompt }: SetupPromptsProps) {
       <View style={globalStyles.grow}>
         <ScrollView style={globalStyles.grow}>
           <View style={[globalStyles.inputContainer, { gap: SPACING.sm }]}>
+            <TextInput
+            editable={!isAddingPrompt} 
+            placeholder="Coding"
+            value={promptName}
+            onChangeText={setPromptName}
+            style={[globalStyles.input, globalStyles.textInput]}
+          />
           </View>
           <View style={[globalStyles.inputContainer, { gap: SPACING.sm }]}>
+            <TextInput
+            editable={!isAddingPrompt}
+            value={promptPoints}
+            placeholder="1"
+            onChangeText={setPromptPoints}
+            style={[globalStyles.input, globalStyles.textInput]}
+          />
           </View>
 
 
