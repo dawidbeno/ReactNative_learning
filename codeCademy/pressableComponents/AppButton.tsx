@@ -6,13 +6,12 @@ export interface AppButton extends Omit<PressableProps, "children"> {
   label: string
 }
 export function AppButton({ label, disabled, ...rest }: AppButton) {
-  // Task 4 and 5: Update the JSX below
   return (
-    <View
-      // style={() => [globalStyles.button, disabled && globalStyles.disabled, { width: "100%" }]}
-      // {...rest}
+    <Pressable
+      style={({ pressed }) => [globalStyles.button, disabled && globalStyles.disabled, { width: "100%" }, pressed && globalStyles.pressed]}
+      {...rest}
     >
-      <Text style={globalStyles.buttonText}>Button</Text>
-    </View>
+      <Text style={globalStyles.buttonText}>{label}</Text>
+    </Pressable>
   )
 }
