@@ -13,12 +13,12 @@ export interface MoodButtonProps {
 export function MoodButton({ mood, selected, onSelectMood, disabled = false }: MoodButtonProps) {
   // Task 1 to 3: Update the JSX below
   return (
-    <View
+    <Pressable
       // disabled={disabled} 
       // style={() => [globalStyles.input, globalStyles.grow, styles.input, selected && styles.selected, disabled && globalStyles.disabled]}
     >
-      <Text style={[styles.label, selected && styles.labelSelected]}>MOOD</Text>
-    </View>
+      <Text style={[styles.label, selected && styles.labelSelected]}>{mood}</Text>
+    </Pressable>
   )
 }
 
