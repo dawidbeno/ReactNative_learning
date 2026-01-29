@@ -14,8 +14,9 @@ export function MoodButton({ mood, selected, onSelectMood, disabled = false }: M
   // Task 1 to 3: Update the JSX below
   return (
     <Pressable
-      // disabled={disabled} 
-      // style={() => [globalStyles.input, globalStyles.grow, styles.input, selected && styles.selected, disabled && globalStyles.disabled]}
+      disabled={disabled} 
+      style={() => [globalStyles.input, globalStyles.grow, styles.input, selected && styles.selected, disabled && globalStyles.disabled]}
+      onPress={onSelectMood}
     >
       <Text style={[styles.label, selected && styles.labelSelected]}>{mood}</Text>
     </Pressable>
