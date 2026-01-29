@@ -44,3 +44,30 @@ In the example, we’ve replaced the `<KeyboardAvoidingView>` as the parent for 
 **padding**: adds padding to the bottom of the view equal to the keyboard size (iOS).\
 **height**: reduces the view height equal to the size of the keyboard (Android).
 
+
+# Scrolling
+While `<ScrollView>` works for small lists, it becomes a performance bottleneck as data grows because it eagerly renders every item at once, even those off-screen.
+To keep your app fast, you should use `<FlatList>`. It renders items lazily, meaning it only loads what is currently visible to the user.
+
+```
+<View style={{ height: 200}}>
+  <FlatList
+    data={users}
+    renderItem={({ item }) => (
+      <View>
+        <Text>Name: {item.name}</Text>
+      </View>
+    )}
+    keyExtractor={item => item.id}
+  />
+</View>
+```
+
+Note that like the `<ScrollView>`, the `<FlatList>` needs to have a deterministic height, either through the height style or flex.
+
+- `data` to specify the items the `<FlatList>` will pass to the renderItem function
+
+- `renderItem` to render child items using a function which will be called by `<FlatList>` on each item in data
+
+- `keyExtractor` to provide a key for each item using a function which will be called by `<FlatList>` so React can efficiently render the items
+

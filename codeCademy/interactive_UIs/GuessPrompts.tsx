@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { MatchResults, Prompt, PromptMood, PromptResponse } from "../types"
-import { Flatlist, Platform, ScrollView, StyleSheet, Text, View } from "react-native"
+import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from "react-native"
 import { AppButton } from "./AppButton"
 import { COLORS, FONT_SIZES, globalStyles, RADIUS, SPACING } from "../theme"
 import { MoodButton } from "./MoodButton"
@@ -36,7 +36,6 @@ export function GuessPrompts({ prompts }: GuessPromptsProps) {
     const results = await checkResults(prompts, responses)
     setResults(results)
   }
-
   function onRestartGameHandler() {
     clearResults()
     setResponses(getShuffledResponses())
@@ -50,9 +49,9 @@ export function GuessPrompts({ prompts }: GuessPromptsProps) {
     <View style={globalStyles.grow}>
       <Text style={globalStyles.sectionTitle}>Match the prompts to match my mood!</Text>
       <View style={globalStyles.grow}>
-        { /* Task 4 and 5: Replace the following ScrollView */} 
-        <ScrollView>
-          {responses.map((item, index) => (
+        <FlatList
+          data={responses}
+          renderItem={({ item, index}) => (
             <View key={item.id} style={styles.guessItem}>
               <Text style={styles.guessTitle}>{item.name}</Text>
               <View style={[globalStyles.row, { gap: SPACING.md }]}>
@@ -73,8 +72,9 @@ export function GuessPrompts({ prompts }: GuessPromptsProps) {
                 />
               </View>
             </View>
-          ))}
-        </ScrollView>
+          )}
+          keyExtractor={item => item.id}
+        />
         <View style={[styles.actionsRow, { gap: SPACING.sm }]}>
           <AppButton
             label="Check Answers"
