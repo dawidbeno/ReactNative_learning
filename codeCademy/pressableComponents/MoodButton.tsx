@@ -11,11 +11,10 @@ export interface MoodButtonProps {
 }
 
 export function MoodButton({ mood, selected, onSelectMood, disabled = false }: MoodButtonProps) {
-  // Task 1 to 3: Update the JSX below
   return (
     <Pressable
       disabled={disabled} 
-      style={() => [globalStyles.input, globalStyles.grow, styles.input, selected && styles.selected, disabled && globalStyles.disabled]}
+      style={({ pressed }) => [globalStyles.input, globalStyles.grow, styles.input, selected && styles.selected, disabled && globalStyles.disabled, pressed && globalStyles.pressed]}
       onPress={onSelectMood}
     >
       <Text style={[styles.label, selected && styles.labelSelected]}>{mood}</Text>
