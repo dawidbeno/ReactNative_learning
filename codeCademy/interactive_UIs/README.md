@@ -8,3 +8,39 @@ The `<Pressable>` component, like `<Button>`, allows us to run code when pressed
 Before `<Pressable>`, React Native used separate components for different touch interactions: `<TouchableOpacity>` (fades on press), `<TouchableHighlight>` (highlights on press), and `<TouchableWithoutFeedback>` (no visual feedback). `<Pressable>` was introduced in React Native 0.63 to unify these into a single component that handles all touch states through style functions and event callbacks. How convenient!
 
 
+
+# Keyboard
+The keyboardType is set to default if not specified, and other common values include:
+
+`email-address`: displays email related characters like `@`and `.` \
+`phone-pad`: displays digits and other characters like `#` \
+`number-pad`: displays digits \
+`decimal-pad`: displays digits and `.` \
+`url`: displays URL-related characters like `.com`, `/`, and `.` 
+
+We can wrap our input element(s) in a `<KeyboardAvoidingView>` component to accommodate the virtual keyboard.
+
+```
+import { KeyboardAvoidingView, Platform } from "react-native"
+<KeyboardAvoidingView
+  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+>
+  <TextInput
+    keyboardType="default"
+  />
+
+  <TextInput
+    keyboardType="email-address"
+  />
+
+  <TextInput
+    keyboardType="phone-pad"
+  />
+</KeyboardAvoidingView>
+```
+
+In the example, we’ve replaced the `<KeyboardAvoidingView>` as the parent for our inputs so they stay visible to the user while the keyboard is visible. Notice the behavior prop, which determines how the layout will change to accommodate the keyboard. The commonly used values are:
+
+**padding**: adds padding to the bottom of the view equal to the keyboard size (iOS).\
+**height**: reduces the view height equal to the size of the keyboard (Android).
+

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Prompt, PromptDTO, PromptMood } from "../types"
-import { FlatList, ScrollView, StyleSheet, Text, TextInput, Switch, View } from "react-native"
+import { FlatList, ScrollView, StyleSheet, Text, TextInput, Platform, View, KeyboardAvoidingView } from "react-native"
 import { MoodButton } from "./MoodButton"
 import { AppButton } from "./AppButton"
 import { COLORS, FONT_SIZES, globalStyles, RADIUS, SPACING } from "../theme"
@@ -29,7 +29,9 @@ export function SetupPrompts({ prompts, onAddPrompt }: SetupPromptsProps) {
   }
 
   return (
-    <View style={globalStyles.grow}>
+    <KeyboardAvoidingView  style={globalStyles.grow}
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
       <View style={globalStyles.grow}>
         <ScrollView style={globalStyles.grow}>
           <View style={[globalStyles.inputContainer, { gap: SPACING.sm }]}>
@@ -48,6 +50,7 @@ export function SetupPrompts({ prompts, onAddPrompt }: SetupPromptsProps) {
             placeholder="1"
             onChangeText={setPromptPoints}
             style={[globalStyles.input, globalStyles.textInput]}
+            keyboardType="number-pad"
           />
           </View>
 
@@ -98,7 +101,7 @@ export function SetupPrompts({ prompts, onAddPrompt }: SetupPromptsProps) {
           </ScrollView>
         ) : <Text style={styles.noPromptsText}>No prompts yet!</Text>}
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
