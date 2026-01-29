@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Prompt, PromptDTO, PromptMood } from "../types"
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
+import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, View } from "react-native"
 import { MoodButton } from "./MoodButton"
 import { AppButton } from "./AppButton"
 import { COLORS, FONT_SIZES, globalStyles, RADIUS, SPACING } from "../theme"
@@ -93,6 +93,7 @@ export function SetupPrompts({ prompts, onAddPrompt }: SetupPromptsProps) {
       <View style={[globalStyles.grow, styles.promptsContainer]}>
         <Text style={globalStyles.sectionTitle}>My Prompts:</Text>
         {prompts.length ? (
+          // Tasks 1, 2, 3: Replace the following ScrollView
           <ScrollView>
             {prompts.map(item => (
               <View key={item.id} style={styles.promptItem}>
