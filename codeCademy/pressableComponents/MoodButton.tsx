@@ -1,0 +1,46 @@
+import React from "react";
+import { Pressable, Text, StyleSheet, View } from "react-native";
+import { PromptMood } from "../types";
+import { COLORS, globalStyles, RADIUS, SPACING } from "../theme";
+
+export interface MoodButtonProps {
+  mood: PromptMood
+  onSelectMood: () => void
+  selected: boolean
+  disabled?: boolean
+}
+
+export function MoodButton({ mood, selected, onSelectMood, disabled = false }: MoodButtonProps) {
+  // Task 1 to 3: Update the JSX below
+  return (
+    <View
+      // disabled={disabled} 
+      // style={() => [globalStyles.input, globalStyles.grow, styles.input, selected && styles.selected, disabled && globalStyles.disabled]}
+    >
+      <Text style={[styles.label, selected && styles.labelSelected]}>MOOD</Text>
+    </View>
+  )
+}
+
+
+const styles = StyleSheet.create({
+  input: {
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    borderRadius: RADIUS.sm,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selected: {
+    backgroundColor: COLORS.primary,
+  },
+  label: {
+    color: COLORS.primary,
+    fontWeight: "500"
+  },
+  labelSelected: {
+    color: "#FFF"
+  }
+})
