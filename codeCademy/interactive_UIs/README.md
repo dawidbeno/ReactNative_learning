@@ -179,3 +179,72 @@ onPress: onRestartGameHandler(gameId)
 **Why the last one is wrong**: `onRestartGameHandler(gameId)` executes the function immediately when the component renders, not when the button is pressed. The arrow function wrapper delays execution until the button is actually pressed.
 
 **Recommendation**: Use direct reference for cleaner code. Use arrow function only when passing parameters or calling multiple functions.
+
+
+# Loading indicators
+`ActivityIndicator` displays a circular loading spinner. It's a simple, cross-platform component for showing loading states.
+
+## Basic Usage
+```jsx
+import { ActivityIndicator } from 'react-native';
+
+// Simple spinner
+<ActivityIndicator />
+
+// Customized spinner
+<ActivityIndicator 
+  size="large" 
+  color="#0000ff" 
+  animating={true}
+/>
+
+```
+
+## Key Props
+- `animating` (boolean, default: true) - Whether spinner is visible and animating
+- `color` (string) - Spinner color (defaults to platform color)
+- `size` (string | number) - `'small'`, `'large'`, or custom number (Android only)
+- `hidesWhenStopped` (boolean, iOS only) - Hides when `animating={false}`
+
+## Common Patterns
+```jsx
+// Conditional loading
+{isLoading && <ActivityIndicator size="large" color="#667eea" />}
+
+// Centered overlay
+<View style={styles.loadingContainer}>
+  <ActivityIndicator size="large" color="#fff" />
+  <Text style={styles.loadingText}>Loading...</Text>
+</View>
+
+```
+
+## Platform Differences
+- **iOS**: Only supports 'small' and 'large' sizes
+- **Android**: Accepts custom numeric sizes
+- Default colors differ between platforms
+
+## Use Cases
+- Data fetching states
+- Form submissions
+- Page transitions
+- Content loading placeholders
+
+One thing to note is that the `animating` prop hides the indicator but keeps the element in the layout, which may not always be desired, as it will affect other components.
+Instead, if we want to remove the indicator from the layout, we can use conditional rendering instead of the `animating` prop.
+```jsx
+const [isLoading, setIsLoading] = useState(false)
+return (
+  <View>
+    {isLoading? (
+      <ActivityIndicator size="large" color="lightblue"/>
+    ) : (
+      <>
+        {/* other components*/}
+      </>
+    )}
+  </View>
+)
+```
+In the example, we remove the `animating` prop and use a ternary to render `<ActivityIndicator>` conditionally and then remove it from the layout once `isLoading` is back to `false`.
+
