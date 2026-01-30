@@ -71,3 +71,36 @@ Note that like the `<ScrollView>`, the `<FlatList>` needs to have a deterministi
 
 - `keyExtractor` to provide a key for each item using a function which will be called by `<FlatList>` so React can efficiently render the items
 
+
+# Modals
+`Modal` is a core component that displays content in a layer above the main application view, blocking interaction with the underlying content.
+
+## Key Props
+- `visible` (boolean) - Controls modal visibility
+- `animationType` - Animation style: `'none'`, `'slide'`, `'fade'`
+- `onRequestClose` - Required on Android; handles back button/gestures
+- `transparent` (boolean) - Allows background to be visible
+
+## Basic Usage
+```jsx
+import { Modal, View, Text, Button } from 'react-native';
+
+<Modal
+  visible={modalVisible}
+  animationType="slide"
+  onRequestClose={() => setModalVisible(false)}
+>
+  
+    Modal Content
+    <Button 
+      title="Close" 
+      onPress={() => setModalVisible(false)} 
+    />
+```
+
+## Important Notes
+- Covers entire screen by default
+- Behavior differs between iOS and Android
+- Must handle dismissal logic manually
+- Content needs explicit styling/positioning
+

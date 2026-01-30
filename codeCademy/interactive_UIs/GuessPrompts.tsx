@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { MatchResults, Prompt, PromptMood, PromptResponse } from "../types"
-import { FlatList, Platform, ScrollView, StyleSheet, Text, View } from "react-native"
+import { FlatList, Modal, Platform, StyleSheet, Text, View } from "react-native"
 import { AppButton } from "./AppButton"
 import { COLORS, FONT_SIZES, globalStyles, RADIUS, SPACING } from "../theme"
 import { MoodButton } from "./MoodButton"
@@ -47,6 +47,45 @@ export function GuessPrompts({ prompts }: GuessPromptsProps) {
   }
   return (
     <View style={globalStyles.grow}>
+      { /* Task 1 and 2: Update the element to a modal */}
+      <>
+        {/* <View style={styles.modal}>
+          <View style={styles.modalContent}>
+            {isLoadingResults && (
+              <View>
+                <Text style={styles.modalText}>Calculating Results...</Text>
+              </View>
+            )}
+            {!!results && (
+              <View>
+                <View>
+                  {results.hasPerfectScore ? (
+                    <Text style={styles.modalText}>It's like we share the same mind, you got them all correct!</Text>
+                  ) : (
+                    <>
+                      {results.correct.length > 0 && (<Text style={styles.modalText}>Good job completing the prompts!</Text>)}
+                      {results.correct.length === 0 ? (<Text style={styles.modalText}>Try Again!</Text>) : (<Text style={styles.modalText}>You got a score of {results.percentage}!</Text>)}
+                    </>
+                  )}
+                </View>
+                <View style={[styles.actionsRow, { gap: SPACING.sm }]}>
+                  <AppButton
+                    label="Back"
+                    onPress={clearResults}
+
+                  />
+                  <AppButton
+                    label="Restart"
+                    onPress={onRestartGameHandler}
+                  />
+                </View>
+              </View>
+            )}
+
+
+          </View>
+        </View> */}
+      </>
       <Text style={globalStyles.sectionTitle}>Match the prompts to match my mood!</Text>
       <View style={globalStyles.grow}>
         <FlatList
@@ -79,6 +118,7 @@ export function GuessPrompts({ prompts }: GuessPromptsProps) {
           <AppButton
             label="Check Answers"
             disabled={!hasCompletedPrompts}
+            onPress={onCheckAnswersHandler}
           />
           <AppButton
             label="Reset"
@@ -97,6 +137,8 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md
   },
   modal: {
+    // Task 3: Update the styling
+
   },
   modalContent: {
     padding: SPACING.lg,
