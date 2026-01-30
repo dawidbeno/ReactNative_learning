@@ -104,3 +104,78 @@ import { Modal, View, Text, Button } from 'react-native';
 - Must handle dismissal logic manually
 - Content needs explicit styling/positioning
 
+# Alerts
+`Alert` displays a native alert dialog with a title, message, and buttons. It's a simple API for showing alerts without needing UI components.
+
+## Basic Usage
+```jsx
+import { Alert } from 'react-native';
+
+// Simple alert
+Alert.alert('Success', 'Your data has been saved');
+
+// Alert with multiple action buttons
+Alert.alert(
+  'Title',
+  'Message',
+  [
+    {
+      text: 'Cancel',
+      onPress: cancelSignup
+    },
+    {
+      text: 'Edit',
+      onPress: editDetails
+    },
+    {
+      text: 'Confirm',
+      onPress: signUp
+    }
+  ]
+);
+```
+
+## Alert.alert() Parameters
+1. **title** (string) - Alert title
+2. **message** (string, optional) - Alert message
+3. **buttons** (array, optional) - Array of button objects
+4. **options** (object, optional) - Additional options (cancelable, onDismiss)
+
+## Button Styles
+- `default` - Standard button
+- `cancel` - Cancel button (bold on iOS)
+- `destructive` - Red text on iOS for destructive actions
+
+## Platform Differences
+- **iOS**: Supports multiple buttons, shows vertically if >2 buttons
+- **Android**: Limited to 3 buttons (neutral, negative, positive)
+
+## Key Points
+- Native dialog, not a custom component
+- Blocks interaction until dismissed
+- Android back button dismisses if `cancelable: true`
+- Cannot be styled (uses native OS styling)
+
+## onPress Function Reference
+Two ways to call methods in `onPress`:
+
+```jsx
+// Direct reference (preferred when no arguments needed)
+onPress: onRestartGameHandler
+
+// Arrow function wrapper (use when passing arguments)
+onPress: () => onRestartGameHandler(gameId)
+
+// Multiple functions (with or without arguments)
+onPress: () => {
+  onRestartGameHandler(gameId);
+  resetScore();
+}
+
+// ❌ INCORRECT - calls immediately during render
+onPress: onRestartGameHandler(gameId)
+```
+
+**Why the last one is wrong**: `onRestartGameHandler(gameId)` executes the function immediately when the component renders, not when the button is pressed. The arrow function wrapper delays execution until the button is actually pressed.
+
+**Recommendation**: Use direct reference for cleaner code. Use arrow function only when passing parameters or calling multiple functions.
