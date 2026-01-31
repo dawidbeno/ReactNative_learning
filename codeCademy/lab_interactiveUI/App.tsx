@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 
 import { SearchBar } from './components/SearchBar';
 import { FilterSwitch } from './components/FilterSwitch';
@@ -70,7 +70,19 @@ export default function App(){
         {/* todo: PRESSABLE view cart */}
 
 
-        {/* todo: FLATLIST create flatlist */}
+        <FlatList
+          data={filteredProducts}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({ item }) => (
+            <ProductCard
+              product={item}
+              isLoading={isLoading === item.id}
+              isAdded={addedItemsSet.has(item.id)}
+              onAddToCart={handleAddToCart}
+            />
+
+          )}
+        />
       </View>
     </View>
   );
