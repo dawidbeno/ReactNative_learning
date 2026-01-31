@@ -5,7 +5,13 @@ import { SearchBarProps } from '../types/index';
 export function SearchBar({ searchText, setSearchText }: SearchBarProps) {
   return (
     <View style={styles.searchBox}>
-      {/* todo: INPUT add textInput*/}
+      <TextInput 
+        value={searchText}
+        onChangeText={setSearchText}
+        placeholder="Search products..."
+        style={styles.textInput}
+        accessibilityLabel="Search products filter"
+      />
     </View>
   )
 }
