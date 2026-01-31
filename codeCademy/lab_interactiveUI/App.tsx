@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, Modal, StyleSheet, FlatList, Pressable } from 'react-native';
 
 import { SearchBar } from './components/SearchBar';
 import { FilterSwitch } from './components/FilterSwitch';
@@ -43,15 +43,17 @@ export default function App(){
 
   return (
     <View style={styles.container}>
-      {/* todo: MODAL wrap in modal*/}
-      <>
-        {/* <View style={styles.modalContainer}>
+      <Modal visible={showCartSummary}
+      transparent animationType="slide"
+      onRequestClose={() => setShowCartSummary(false)}>
+        <View style={styles.modalContainer}>
           <View style={styles.summaryContainer}>
             <View style={styles.summary}>
+                <CartSummary items={addedItems} onClear={console.log} onClose={console.log} />
             </View>
           </View>
-        </View> */}
-      </>
+        </View>
+      </Modal>
       <View style={styles.header}>
         <Text style={styles.headerText}>Codecademy Store</Text>
       </View>
@@ -67,7 +69,12 @@ export default function App(){
           setShowOnlySale={setShowOnlySale}
         />
 
-        {/* todo: PRESSABLE view cart */}
+        <Pressable
+          style={[styles.summaryButton, addedItems.length === 0 && styles.disabled]}
+          onPress={() => setShowCartSummary(true)}
+          disabled={addedItems.length === 0}>
+          <Text style={styles.buttonText}>View Cart</Text>
+        </Pressable>
 
 
         <FlatList
@@ -91,6 +98,7 @@ export default function App(){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 70,
     backgroundColor: '#f5f5f5',
   },
   header: {
@@ -131,7 +139,8 @@ const styles = StyleSheet.create({
     height: 500
   },
   modalContainer: {
-    // todo: MODAL center
+    flex: 1,
+    justifyContent: 'center',
     paddingHorizontal: 10
   },
   summaryContainer: {
