@@ -248,3 +248,98 @@ return (
 ```
 In the example, we remove the `animating` prop and use a ternary to render `<ActivityIndicator>` conditionally and then remove it from the layout once `isLoading` is back to `false`.
 
+
+# Accessibility
+
+Accessibility props help screen readers and assistive technologies understand UI elements, making apps usable for people with disabilities.
+
+## Accessibility Roles
+Define what type of element it is:
+
+```jsx
+// Common roles
+<TouchableOpacity accessible={true} accessibilityRole="button">
+  <Text>Press Me</Text>
+</TouchableOpacity>
+
+<Text accessibilityRole="header">Page Title</Text>
+
+<Image accessibilityRole="image" />
+```
+
+**Common Roles:**
+- `button` - Pressable buttons
+- `header` - Section headers
+- `link` - Navigational links
+- `image` - Images
+- `text` - Static text
+- `switch` - Toggle switches
+- `checkbox` - Checkboxes
+- `radio` - Radio buttons
+- `menu` - Menus
+- `menuitem` - Menu items
+
+## Accessibility States
+Describe the current state of an element:
+
+```jsx
+<TouchableOpacity
+  accessibilityRole="button"
+  accessibilityState={{
+    disabled: isDisabled,
+    selected: isSelected,
+    checked: isChecked,
+    busy: isLoading
+  }}
+>
+  <Text>Submit</Text>
+</TouchableOpacity>
+```
+
+**Available States:**
+- `disabled` (boolean) - Element is disabled
+- `selected` (boolean) - Element is selected
+- `checked` (boolean | 'mixed') - Checkbox/radio state
+- `busy` (boolean) - Element is loading/busy
+- `expanded` (boolean) - Expandable element is expanded
+
+
+## Labels & Hints
+
+```jsx
+// Label: What the element is
+<TouchableOpacity
+  accessibilityLabel="Add to cart"
+  accessibilityHint="Adds item to your shopping cart"
+>
+  <Icon name="cart" />
+</TouchableOpacity>
+
+// For images
+<Image
+  source={require('./profile.jpg')}
+  accessibilityLabel="User profile picture"
+/>
+```
+
+## Best Practices
+- Always provide `accessibilityLabel` for non-text elements
+- Use `accessibilityHint` to explain what happens on interaction
+- Set appropriate `accessibilityRole` for all interactive elements
+- Update `accessibilityState` when element state changes
+- Test with screen readers (TalkBack on Android, VoiceOver on iOS)
+
+## Example: Complete Button
+
+```jsx
+<TouchableOpacity
+  accessible={true}
+  accessibilityRole="button"
+  accessibilityLabel="Delete item"
+  accessibilityHint="Removes this item from your list"
+  accessibilityState={{ disabled: isDeleting }}
+  onPress={handleDelete}
+>
+  <Icon name="trash" />
+</TouchableOpacity>
+```
