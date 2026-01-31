@@ -9,17 +9,4 @@ In this project, you’ll use React Native to bring the Codecademy Store to life
 - add items to their cart
 - view and manage their shopping cart
 
-## Update SDK
-```bash
-# 1. Remove everything
-rm -rf node_modules package-lock.json
 
-# 2. Install expo with legacy flag
-npm install expo@~54.0.0 --legacy-peer-deps
-
-# 3. Update all expo packages
-npx expo install --fix -- --legacy-peer-deps
-
-# 4. Clear cache and start
-npx expo start -c
-```

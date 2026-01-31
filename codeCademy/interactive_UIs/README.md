@@ -7,8 +7,6 @@ The `<Pressable>` component, like `<Button>`, allows us to run code when pressed
 ## deprecated TouchableOpacity
 Before `<Pressable>`, React Native used separate components for different touch interactions: `<TouchableOpacity>` (fades on press), `<TouchableHighlight>` (highlights on press), and `<TouchableWithoutFeedback>` (no visual feedback). `<Pressable>` was introduced in React Native 0.63 to unify these into a single component that handles all touch states through style functions and event callbacks. How convenient!
 
-
-
 # Keyboard
 The keyboardType is set to default if not specified, and other common values include:
 
