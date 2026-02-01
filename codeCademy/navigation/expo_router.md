@@ -503,3 +503,22 @@ export default function ThoughtsNavigator() {
 ```
 
 This works when you don't need custom options. Expo Router scans the folder and adds all screens automatically. For customization (headers, titles, etc.), explicitly define `<Stack.Screen>` elements.
+
+
+# Summary
+In this lesson, you learned that React Native Navigation:
+
+- Uses the React Navigation library with common navigators like Native Stack (@react-navigation/native-stack), Bottom Tabs (@react-navigation/bottom-tabs), and Drawer (@react-navigation/drawer) navigators
+- Requires `<NavigationContainer>` to wrap your entire app and uses `create[TYPE]Navigator` to create navigators with `<Navigator>` and `<Screen>` components
+- Supports navigator options like initialRouteName and screenOptions, plus screen-specific props like name, component, and options
+- Makes Bottom Tabs Navigator ideal for a broad, section-based organization with persistent navigation at the bottom of the screen
+- Provides programmatic navigation through the navigation object (passed to screens) or useNavigation() hook with methods like navigate(), goBack(), and navigator-specific methods like popTo()
+- Supports dynamic paths using route parameters, accessible via route.params in the destination screen
+- Enables nested navigation for combining different navigator types, with action bubbling and careful options management across nested levels
+- You also learned that Expo Router:
+
+- Is built on top of React Navigation but uses file-based routing where your folder structure automatically generates routes
+- Treats index.tsx as the default route and _layout.tsx files define navigator relationships without being part of the URL path
+- Creates dynamic paths using square bracket folder names like [userId] and nested routes using folder structures with nested _layout.tsx files
+- Accesses dynamic path data using useLocalSearchParams() and provides navigation via useRouter hook or `<Link>` component with href prop
+- Handles authentication routing using route groups (auth) to organize routes without affecting URL segments and `<Redirect>` component for automatic redirection
