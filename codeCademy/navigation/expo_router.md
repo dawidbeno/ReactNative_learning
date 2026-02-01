@@ -132,7 +132,274 @@ The `index.tsx` inside `[id]/` makes the route accessible at the dynamic segment
 - `[id]/index.tsx` → Accessible at `/thoughts/:id`
 - `[id]/edit.tsx` → Would be accessible at `/thoughts/:id/edit`
 
-We'll cover accessing the actual dynamic value in the next section.
+### Accessing Route Parameters
+
+**The `useLocalSearchParams` Hook:**
+```typescript
+import { useLocalSearchParams } from 'expo-router';
+
+export default function Thought() {
+  const { id } = useLocalSearchParams();
+  // id contains the value from the URL path
+}
+```
+
+**How Parameter Names Work:**
+- Folder name: `[id]` → Parameter name: `id`
+- Folder name: `[productId]` → Parameter name: `productId`
+- Folder name: `[slug]` → Parameter name: `slug`
+
+**Important:** Parameters are always strings or arrays of strings. Convert types explicitly:
+```typescript
+const { id } = useLocalSearchParams();
+const thoughtId = Number(id); // Convert to number
+```
+
+### Navigation in Expo Router
+
+**The `useRouter` Hook:**
+```typescript
+import { useRouter } from 'expo-router';
+
+export default function Home() {
+  const router = useRouter();
+  
+  const onPressRandomThoughtHandler = () => {
+    router.navigate(`/thoughts/${randomThoughtId}`);
+  };
+}
+```
+
+**Available Methods:**
+- `navigate(path)` - Navigate to a route
+- `push(path)` - Push to stack
+- `back()` - Go back
+- `replace(path)` - Replace current screen
+
+**Key Difference from React Navigation:**
+- React Navigation: `navigation.navigate("ThoughtDetail", { id: 5 })`
+- Expo Router: `router.navigate("/thoughts/5")`
+
+You build paths as strings starting from `/app`, replacing bracketed segments with actual values.
+
+### Declarative Navigation with `<Link>`
+
+For UI-based navigation, use the `Link` component:
+
+```typescript
+import { Link } from 'expo-router';
+
+<Link 
+  href={`/thoughts/${thoughtId}`}
+  style={styles.linkStyle}
+>
+  View Thought
+</Link>
+```
+
+**Props:**
+- `href` - Navigation path (required)
+- `replace` - Replace instead of push (optional)
+- `style` - Styling (optional)
+
+**Comparison:**
+```typescript
+// Imperative (programmatic)
+router.navigate(`/thoughts/${id}`);
+
+// Declarative (component)
+<Link href={`/thoughts/${id}`}>View</Link>
+```
+
+### Complete Example
+
+```typescript
+// app/thoughts/index.tsx
+import { Link } from 'expo-router';
+
+export default function ThoughtsList() {
+  const thoughts = [
+    { id: '1', text: 'React Native is awesome' },
+    { id: '2', text: 'Expo Router simplifies navigation' }
+  ];
+  
+  return (
+    <View>
+      {thoughts.map(thought => (
+        <Link 
+          key={thought.id}
+          href={`/thoughts/${thought.id}`}
+        >
+          {thought.text}
+        </Link>
+      ))}
+    </View>
+  );
+}
+
+// app/thoughts/[id]/index.tsx
+import { useLocalSearchParams } from 'expo-router';
+
+export default function ThoughtDetail() {
+  const { id } = useLocalSearchParams();
+  
+  // Find thought with this id
+  const thought = thoughts.find(t => t.id === id);
+  
+  return <Text>{thought.text}</Text>;
+}
+```
+
+This web-like approach makes paths correspond to file structures and navigation feel like standard URL routing.
+
+## Route Groups
+
+### The Problem: Organizing Without Affecting URLs
+Apps often separate public routes (anyone can access) from protected routes (authentication required). You might want:
+- Public: `/login`, `/signup`
+- Protected: `/dashboard`, `/profile`
+
+Creating folders like `public/` or `protected/` would pollute URLs: `/public/login`, `/protected/dashboard` ❌
+
+### The Solution: Route Groups
+Route groups are folders wrapped in parentheses `(name)` that organize code without contributing path segments.
+
+**Folder Structure:**
+```
+app/
+  _layout.tsx
+  (auth)/              // Route group - no URL segment
+    _layout.tsx
+    login.tsx          → /login (not /auth/login)
+  (protected)/         // Route group - no URL segment
+    _layout.tsx
+    index.tsx          → / (not /protected)
+    thoughts/
+      [id]/index.tsx   → /thoughts/[id]
+```
+
+**Key Points:**
+- `(auth)` and `(protected)` don't appear in URLs
+- Routes remain clean: `/login`, `/`, `/thoughts/1`
+- Pure organizational tool
+
+### Layout Files in Route Groups
+
+Each route group can have its own `_layout.tsx` for group-specific logic like authentication checks.
+
+**Protected Layout Example:**
+```typescript
+// app/(protected)/_layout.tsx
+import { Redirect } from 'expo-router';
+
+export default function ProtectedLayout() {
+  if (!isLoggedIn) {
+    return <Redirect href="/login" />;
+  }
+  
+  return (
+    <Tabs>
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="thoughts" />
+    </Tabs>
+  );
+}
+```
+
+**How It Works:**
+1. User tries to access a protected route
+2. Layout checks authentication
+3. If not logged in → Redirect to `/login`
+4. If logged in → Render the tabs navigator
+
+**`<Redirect>` Component:**
+- Declarative navigation
+- Automatically navigates to specified route
+- Alternative: `router.replace('/login')` for programmatic control
+
+**Why `replace()` not `navigate()`?**
+Using `replace()` removes unauthorized pages from history, preventing users from going back to protected screens after logout.
+
+### Protected Screens (Expo Router 53+)
+
+Modern approach using `<Stack.Protected>` wrapper:
+
+```typescript
+// app/_layout.tsx
+export default function RootLayout() {
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Protected guard={isLoggedIn}>
+        <Stack.Screen name="(protected)" />
+      </Stack.Protected>
+      <Stack.Protected guard={!isLoggedIn}>
+        <Stack.Screen name="(auth)" />
+      </Stack.Protected>
+    </Stack>
+  );
+}
+```
+
+**How It Works:**
+- `guard` prop accepts a boolean condition
+- Navigator shows first screen where guard condition is `true`
+- When authentication changes, automatically switches route groups
+- Clears navigation history from inaccessible sections
+
+**Benefits Over Manual Redirects:**
+- No redirect code in each layout file
+- Automatic history management
+- Centralized authentication logic
+- Cleaner, more declarative
+
+### Comparison: Manual vs Protected
+
+**Manual Approach:**
+```typescript
+// Each protected layout needs this
+if (!isLoggedIn) {
+  return <Redirect href="/login" />;
+}
+```
+
+**Protected Approach:**
+```typescript
+// Single root configuration
+<Stack.Protected guard={isLoggedIn}>
+  <Stack.Screen name="(protected)" />
+</Stack.Protected>
+```
+
+### Common Patterns
+
+**Auth Flow:**
+```
+app/
+  _layout.tsx           // Root with Protected guards
+  (auth)/
+    login.tsx           → /login
+    signup.tsx          → /signup
+  (protected)/
+    _layout.tsx         // Tabs for authenticated users
+    dashboard.tsx       → /dashboard
+    profile.tsx         → /profile
+```
+
+**Multi-Level Groups:**
+```
+app/
+  (public)/
+    about.tsx           → /about
+    contact.tsx         → /contact
+  (user)/
+    (settings)/
+      account.tsx       → /account
+      privacy.tsx       → /privacy
+```
+
+Both `(user)` and `(settings)` are route groups - neither affects the URL path.
+
+
 
 ## Nested Navigators with Layouts
 
