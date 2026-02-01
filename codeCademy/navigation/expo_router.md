@@ -515,8 +515,8 @@ In this lesson, you learned that React Native Navigation:
 - Provides programmatic navigation through the navigation object (passed to screens) or useNavigation() hook with methods like navigate(), goBack(), and navigator-specific methods like popTo()
 - Supports dynamic paths using route parameters, accessible via route.params in the destination screen
 - Enables nested navigation for combining different navigator types, with action bubbling and careful options management across nested levels
-- You also learned that Expo Router:
 
+You also learned that Expo Router:
 - Is built on top of React Navigation but uses file-based routing where your folder structure automatically generates routes
 - Treats index.tsx as the default route and _layout.tsx files define navigator relationships without being part of the URL path
 - Creates dynamic paths using square bracket folder names like [userId] and nested routes using folder structures with nested _layout.tsx files
