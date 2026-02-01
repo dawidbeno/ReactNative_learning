@@ -99,9 +99,18 @@ export default function RootTabNavigator() {
 
 ## Dynamic Routes
 
-### Creating Variable Path Segments
-Use square brackets in folder names to create dynamic routes:
+### The Problem: Variable Content
+Traditional static routes work for fixed pages like `/about` or `/faq`, but what about content that varies? For example:
+- Product details: `/products/123`, `/products/456`
+- User profiles: `/users/john`, `/users/sarah`
+- Blog posts: `/posts/2024-review`, `/posts/getting-started`
 
+Creating a separate file for each possible ID is impossible.
+
+### The Solution: Dynamic Segments
+Use square brackets `[parameter]` in folder names to create routes that match any value in that position.
+
+**Folder Structure:**
 ```
 app/
   thoughts/
@@ -109,29 +118,52 @@ app/
       index.tsx    → /thoughts/1, /thoughts/10, /thoughts/1000
 ```
 
-The `[id]` folder creates a dynamic segment that matches any value:
-- `/thoughts/1` ✓
-- `/thoughts/10` ✓
-- `/thoughts/1000` ✓
+**How It Works:**
+- The `[id]` folder is a **placeholder** for any value
+- Expo Router matches any path where something exists in that position
+- `/thoughts/1` matches → `id = "1"`
+- `/thoughts/hello` matches → `id = "hello"`
+- `/thoughts/abc-123` matches → `id = "abc-123"`
 
-We'll cover accessing the dynamic value (like `id`) in the next section.
+**Why the Extra `index.tsx`?**
+The `index.tsx` inside `[id]/` makes the route accessible at the dynamic segment level. Without it, you'd need additional path segments like `/thoughts/1/details`.
+
+**Pattern Recap:**
+- `[id]/index.tsx` → Accessible at `/thoughts/:id`
+- `[id]/edit.tsx` → Would be accessible at `/thoughts/:id/edit`
+
+We'll cover accessing the actual dynamic value in the next section.
 
 ## Nested Navigators with Layouts
 
-### Multiple Layout Files
-You can have layouts at different levels to create complex navigation:
+### Understanding Navigation Hierarchies
+Real apps need layered navigation structures:
+- **Top level**: Main sections (tabs, drawer)
+- **Within sections**: Detailed navigation (stacks for lists → details)
 
+Example: Instagram has tabs (Home, Search, Profile), but each tab has its own navigation flow with multiple screens.
+
+### Multiple Layout Files Strategy
+Each folder can have its own `_layout.tsx` to define how screens in that folder relate to each other.
+
+**Folder Structure:**
 ```
 app/
   _layout.tsx          // Root: Tab navigator
-  index.tsx
-  faq.tsx
-  thoughts/
+  index.tsx            // Home tab content
+  faq.tsx              // FAQ tab content
+  thoughts/            // Thoughts tab (contains sub-navigation)
     _layout.tsx        // Nested: Stack navigator  
-    index.tsx
+    index.tsx          // Thoughts list
     [id]/
-      index.tsx
+      index.tsx        // Individual thought detail
 ```
+
+**How Layouts Nest:**
+1. Root `_layout.tsx` creates the overall structure (tabs)
+2. The `thoughts` folder appears as one tab in the root navigator
+3. Inside `thoughts/`, a separate `_layout.tsx` creates a stack navigator
+4. This stack manages navigation between the thoughts list and individual thoughts
 
 ### Example: Tabs with Nested Stack
 
@@ -145,11 +177,14 @@ export default function RootLayout() {
     <Tabs>
       <Tabs.Screen name="index" options={{ tabBarLabel: 'Home' }} />
       <Tabs.Screen name="faq" options={{ tabBarLabel: 'Q&A' }} />
+      {/* 'thoughts' references the entire thoughts/ folder */}
       <Tabs.Screen name="thoughts" options={{ tabBarLabel: 'My Thoughts' }} />
     </Tabs>
   );
 }
 ```
+
+**Key Point:** The `name="thoughts"` doesn't point to a file - it references the entire `thoughts/` folder, which contains its own layout and screens.
 
 **Nested Layout (Stack):**
 ```typescript
@@ -163,6 +198,7 @@ export default function ThoughtsNavigator() {
         name="index" 
         options={{ headerShown: false }} 
       />
+      {/* Notice: name includes the folder structure */}
       <Stack.Screen 
         name="[id]/index" 
         options={{ headerTitle: 'My Thoughts' }} 
@@ -172,10 +208,31 @@ export default function ThoughtsNavigator() {
 }
 ```
 
-### How It Works
-1. Root layout creates tabs: Home, Q&A, My Thoughts
-2. Tapping "My Thoughts" tab enters the nested stack navigator
-3. Stack handles navigation between thoughts list (`index.tsx`) and individual thought details (`[id]/index.tsx`)
+**Why `name="[id]/index"`?**
+The name must match the relative path from the layout file's location. Since `[id]/index.tsx` is inside the `thoughts/` folder, we reference it as `[id]/index`.
+
+### Navigation Flow Example
+1. User opens app → Root layout renders tabs
+2. User taps "My Thoughts" tab → Enters `thoughts/` section
+3. `thoughts/_layout.tsx` renders its stack navigator
+4. Stack shows `thoughts/index.tsx` (the list)
+5. User taps a thought → Stack pushes `thoughts/[id]/index.tsx` (the detail)
+6. User can go back within the stack or switch tabs
+
+### Independent Navigation States
+Each tab maintains its own navigation history:
+- Navigate deep into "My Thoughts" stack
+- Switch to "Home" tab
+- Switch back to "My Thoughts" → You're still at the same place in the stack
 
 ### Auto-Inferred Screens
-If you don't need custom options, Expo Router automatically includes all screens in the folder - just specify the navigator type without individual `<Stack.Screen>` elements.
+Expo Router can automatically detect and include screens:
+
+```typescript
+// Minimal version - auto-detects all screens in folder
+export default function ThoughtsNavigator() {
+  return <Stack />;
+}
+```
+
+This works when you don't need custom options. Expo Router scans the folder and adds all screens automatically. For customization (headers, titles, etc.), explicitly define `<Stack.Screen>` elements.
