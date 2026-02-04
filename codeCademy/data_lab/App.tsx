@@ -30,6 +30,8 @@ export default function App() {
     clearStorage,
   } = useIceCreamData();
 
+  console.log("App starting");
+
   return (
     // Avoiding SafeAreaView because Platform-specific Considerations doesn't teach til after this module.
     <View style={styles.container}>
