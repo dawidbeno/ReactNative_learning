@@ -32,6 +32,7 @@ type RootTabParamList = {
 
 // Main App
 const App = () => {
+  console.log("App started");
   return (
    <></>
   );
