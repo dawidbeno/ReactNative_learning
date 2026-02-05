@@ -34,8 +34,8 @@ type RootTabParamList = {
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const WorkoutStack = createNativeStackNavigator<WorkoutStackParamList>();
-
 const ProgressStack = createNativeStackNavigator<ProgressStackParamList>();
+const ProfileStack = createNativeStackNavigator<ProfileStackParamList>();
 
 // Create a component for the Workout Stack Navigator
 const WorkoutsTabNavigator = () => {
@@ -68,6 +68,19 @@ const ProgressStackNavigator = () => {
   );
 };
 
+const ProfileStackNavigator = () => {
+  return (
+    <ProfileStack.Navigator>
+      <ProfileStack.Screen name="Profile"
+      component={ProfileScreen}
+      options={{ title: "Profile" }}/>
+      <ProfileStack.Screen name="Settings"
+      component={SettingsScreen}
+      options={{ title: "Settings" }}/>
+    </ProfileStack.Navigator>
+  );
+};
+
 // Main App
 const App = () => {
   console.log("App started");
@@ -93,7 +106,11 @@ const App = () => {
           component={ProgressStackNavigator}
           options={{ title: "Progress" }}
         />
-        {/* You'll addProfileTab here similarly */}
+        <Tab.Screen 
+          name="ProfileTab"
+          component={ProfileStackNavigator}
+          options={{ title: "Profile" }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
