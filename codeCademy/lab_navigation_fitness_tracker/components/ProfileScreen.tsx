@@ -4,7 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "../App";
 
 type ProfileScreenProps = NativeStackScreenProps<ProfileStackParamList, "Profile">
-export function ProfileScreen(){
+export function ProfileScreen({ navigation }: ProfileScreenProps) {
   return (
     <ScrollView style={globalStyles.container}>
       <View style={styles.profileHeader}>
@@ -18,7 +18,7 @@ export function ProfileScreen(){
       <View style={styles.menuContainer}>
         <Pressable 
           style={styles.menuItem} 
-          onPress={console.log}
+          onPress={() => navigation.navigate("Settings")}
         >
           <Text style={styles.menuText}>App Settings</Text>
           <Text style={styles.menuArrow}>&gt;</Text>

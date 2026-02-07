@@ -5,7 +5,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ProgressStackParamList } from "../App";
 
 type ProgressScreenProps = NativeStackScreenProps<ProgressStackParamList, "Progress">
-export function ProgressScreen(){
+export function ProgressScreen({ navigation }: ProgressScreenProps) {
  
   return (
     <ScrollView style={globalStyles.container}>
@@ -26,7 +26,7 @@ export function ProgressScreen(){
       
       <Pressable 
         style={globalStyles.primaryButton} 
-        onPress={console.log}
+        onPress={() => navigation.navigate("Goals")}
       >
         <Text style={globalStyles.primaryButtonText}>View Goals</Text>
       </Pressable>

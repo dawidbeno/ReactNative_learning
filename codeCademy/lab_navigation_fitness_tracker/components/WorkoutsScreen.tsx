@@ -7,7 +7,7 @@ import { WorkoutStackParamList } from "../App";
 
 type WorkoutsScreenProps = NativeStackScreenProps<WorkoutStackParamList, "Workouts">
 
-export function WorkoutsScreen(){
+export function WorkoutsScreen({ navigation }: WorkoutsScreenProps) {
 
 
   return (
@@ -21,7 +21,7 @@ export function WorkoutsScreen(){
         <Pressable 
           key={index}
           style={styles.card} 
-          onPress={console.log}
+          onPress={() => navigation.navigate("WorkoutDetail", { workoutName: workout.name })}
         >
           <Text style={styles.cardTitle}>{workout.name}</Text>
           <Text style={styles.cardInfo}>Duration: {workout.duration}</Text>

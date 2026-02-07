@@ -5,8 +5,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { WorkoutStackParamList } from "../App";
 
 type WorkoutDetailScreenProps = NativeStackScreenProps<WorkoutStackParamList, "WorkoutDetail">
-export function WorkoutDetailScreen(){
-  const workoutName = ""
+export function WorkoutDetailScreen({ route }: WorkoutDetailScreenProps) {
+  const workoutName = route.params.workoutName
 
   const workout = workouts.find(w => w.name === workoutName)
   
