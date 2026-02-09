@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { theme } from '@/theme';
 
-export default function BrowseTab() {
+export default function CategoriesTab() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Browse Books</Text>
-      <Text style={styles.subtitle}>Welcome to your library!</Text>
+      <Text style={styles.title}>Categories</Text>
+      <Text style={styles.subtitle}>Browse books by category</Text>
     </View>
   );
 }
