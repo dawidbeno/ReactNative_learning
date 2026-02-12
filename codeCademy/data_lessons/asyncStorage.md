@@ -31,3 +31,49 @@ export const STORAGE_KEYS = {
 // Namespaced key generator for cache endpoints
 export const getCacheKey = (cacheId: string): string => `${STORAGE_KEYS.CACHE}:${cacheId}`;
 ```
+
+## Operations
+Four commond AsyncStorage operations:
+
+1. setItem() 
+To store key-value pairs to the device:
+```tsx
+// key = @username, value = john_doe
+await AsyncStorage.setItem('@username', 'john_doe');
+```
+NOTE:
+However, AsyncStorage only stores strings, so we need to serialize complex data types like objects and arrays using `JSON.stringify()`:
+```tsx
+const userData = { id: 123, name: 'John Doe', theme: 'dark' };
+await AsyncStorage.setItem('@user_data', JSON.stringify(userData));
+```
+Using `getCacheKey()` creates a namespaced key like `@cache:current_student`, which helps organize your storage and prevents conflicts with other parts of your app that might use similar key names.
+
+
+2. getItem()
+Returns the stored string value or null if the key doesn’t exist.
+```tsx
+const username = await AsyncStorage.getItem('@username');
+// username will be 'john_doe' or null if not found
+```
+Since we used `JSON.stringify()` to store the object, we need to use `JSON.parse()` to convert it back when we retrieve it:
+```tsx
+
+const userDataString = await AsyncStorage.getItem('@user_data');
+const userData = userDataString ? JSON.parse(userDataString) : null;
+// userData will be the original object or null
+```
+
+3. removeItem()
+Method to delete a key-value pair from storage permanently:
+```tsx
+await AsyncStorage.removeItem('@username');
+```
+
+4. getAllKeys()
+We often need to see what’s stored in our app for debugging and maintenance purposes. The `getAllKeys()` operation returns an array of all stored keys in AsyncStorage:
+```tsx
+const keys = await AsyncStorage.getAllKeys();
+console.log('All stored keys:', keys);
+// Output: ['@username', '@user_data', '@vehicle_favorites']
+```
